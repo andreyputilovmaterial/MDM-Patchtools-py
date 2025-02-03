@@ -66,7 +66,7 @@ class PatchSectionOnNextCaseInsert:
                         'variable_lvalue_path': '',
                         'variable_rvalue_path': ''
                     }
-                    root_chunk_scripts = '\n\' {@}\n\n'
+                    root_chunk_scripts = '\' {@}\n'
                     code_node_root = processor_onnextcase_code_obj.CodeNode(root_chunk_scripts,root_chunk_substitions)
                     self.result_chunks_dict[''] = code_node_root
                 except Exception as e:
