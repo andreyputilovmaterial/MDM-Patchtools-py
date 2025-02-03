@@ -29,7 +29,7 @@ class FileLoader:
     def apply_patch(self,chunk):
         action = chunk['action']
         if action not in self.processors:
-            raise FileLoaderException('Patch Error: unsupported type: "{t}"'.format(t=action))
+            raise FileLoaderException('Patch Error: unsupported patch type: "{t}"'.format(t=action))
         for edit in self.processors[action](chunk):
             self.final_edits.append(edit)
     
@@ -72,7 +72,7 @@ class FileLoader:
         result = ''
         start = 0
         pos = 0
-        for chunk in self.final_edits:
+        for chunk in sorted( self.final_edits, key=lambda c: -1 if not c['pos'] else c['pos'] ):
             op = chunk['op']
             if op=='dummy':
                 continue
