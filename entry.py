@@ -12,12 +12,15 @@ import json
 if __name__ == '__main__':
     # run as a program
     import handler_dms
+    import handler_txt
 elif '.' in __name__:
     # package
     from . import handler_dms
+    from . import handler_txt
 else:
     # included with no parent package
     import handler_dms
+    import handler_txt
 
 
 
@@ -71,12 +74,14 @@ def entry_point(runscript_config={}):
     FileLoader = None
     if not args.inp_type:
         raise Exception('file type not specified, please use --inp-type option')
+    elif args.inp_type=='txt':
+        FileLoader = handler_txt.FileLoader
     elif args.inp_type=='dms':
         FileLoader = handler_dms.FileLoader
     elif args.inp_type=='mdd':
         raise Exception('can\'t handle mdd: not implemented')
     elif args.inp_type=='mrs':
-        raise Exception('can\'t handle mrs: not implemented')
+        FileLoader = handler_txt.FileLoader
     else:
         raise Exception('unsupported file type: "{t}"'.format(t=args.inp_type))
 

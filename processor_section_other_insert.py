@@ -17,11 +17,11 @@ else:
 
 
 
-def sanitize_section_name(s):
-    assert re.match(r'^\s*?\w+\s*?$',section_name,flags=re.I|re.DOTALL), 'PatchSectionOther: section name must be alphanumeric, no spaces ("{s}")'.format(s=section_name)
-    s = re.sub(r'^\s*','',re.sub(r'\s*$','',s,flags=re.I|re.DOTALL),flags=re.I|re.DOTALL)
-    s = s.lower()
-    return s
+def sanitize_section_name(section_name):
+    assert re.match(r'^\s*?\w+\s*?$',section_name,flags=re.I|re.DOTALL), 'PatchSectionOther: section name must be alphanumeric, no spaces ("{section_name}")'.format(section_name=section_name)
+    section_name = re.sub(r'^\s*','',re.sub(r'\s*$','',section_name,flags=re.I|re.DOTALL),flags=re.I|re.DOTALL)
+    section_name = section_name.lower()
+    return section_name
 
 
 
@@ -46,7 +46,6 @@ class PatchSectionOtherInsert(processor_simple_insert.PatchInsert):
             find_regex_results =  [m for m in find_regex_results] # so that I can refer to multiple items of a generator multiple times
         for section_pattern in find_regex_results:
             if section_pattern:
-                section_pattern = find_regex_results[0]
                 section_span = {
                     'opening_clause': section_pattern.span(1),
                     'name': section_pattern.span(2),
@@ -88,6 +87,7 @@ class PatchSectionOtherInsert(processor_simple_insert.PatchInsert):
         txt_add = what_to_add(chunk)
 
         section_name = sanitize_section_name(chunk['section'])
+        print('[DEBUG]: sections_dict.keys() = [ {s} ]'.format(s=', '.join([n for n in self.sections_dict.keys() ]))) # TODO:
         if section_name not in self.sections_dict:
             raise PatchSectionOtherInsertException('section "{s}" not found'.format(s=chunk['section']))
         section = self.sections_dict[section_name]
