@@ -40,7 +40,7 @@ class PatchSectionOtherInsert(processor_simple_insert.PatchInsert):
         self.config = {} # not used, as of now
 
         self.sections_dict = {}
-        regex = re.compile(r'((?:^|\n)\s*?event\s*?\(\s*?'+r'(\w+)'+r'\b[^\n]*?\s*?\)\s*?(?:\'[^\n]*?)?\s*?\n)((?:[^\n]*?\n)*?)(\s*?end\b\s*?\bevent\b)',flags=re.I|re.DOTALL)
+        regex = re.compile(r'((?:^|\n)\s*?event\s*?\(\s*?'+r'(\w+)'+r'\b[^\n]*?\s*?\)\s*?(?:\'[^\n]*?)?\s*?\n)((?:[^\n]*?\n)*?)((?:\s*?\n)*\s*?end\b\s*?\bevent\b)',flags=re.I|re.DOTALL)
         find_regex_results = re.finditer(regex,txt)
         if find_regex_results:
             find_regex_results =  [m for m in find_regex_results] # so that I can refer to multiple items of a generator multiple times
@@ -87,7 +87,6 @@ class PatchSectionOtherInsert(processor_simple_insert.PatchInsert):
         txt_add = what_to_add(chunk)
 
         section_name = sanitize_section_name(chunk['section'])
-        print('[DEBUG]: sections_dict.keys() = [ {s} ]'.format(s=', '.join([n for n in self.sections_dict.keys() ]))) # TODO:
         if section_name not in self.sections_dict:
             raise PatchSectionOtherInsertException('section "{s}" not found'.format(s=chunk['section']))
         section = self.sections_dict[section_name]
@@ -98,3 +97,5 @@ class PatchSectionOtherInsert(processor_simple_insert.PatchInsert):
         pos_abs = section['section_span']['body'][0] + pos_relative
 
         yield { 'op': 'add', 'text': txt_add, 'pos': pos_abs }
+
+

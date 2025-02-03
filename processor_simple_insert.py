@@ -11,7 +11,7 @@ def find_position(pattern,txt):
         if pattern>=0:
             return pattern
         elif pattern<0:
-            return len(txt) - pattern
+            return len(txt) + pattern + 1
         else:
             raise Exception('patch: find_position: assert: int is not >=0 and not <0, what is it? {n}'.format(n=pattern))
     elif isinstance(pattern,re.Pattern): # this is literally not possible, because we are reading data from json, and re.Pattern can\'t be sent through json
