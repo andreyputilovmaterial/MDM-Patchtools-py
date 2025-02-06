@@ -40,7 +40,7 @@ class PatchSectionOnNextCaseInsert:
             self.chunks_emitted = []
             find_regex_results = re.finditer(re.compile(r'((?:^|\n)\s*?event\s*?\(\s*?'+r'OnNextCase'+r'\b[^\n]*?\s*?\)\s*?(?:\'[^\n]*?)?\s*?\n)((?:[^\n]*?\n)*?)(\s*?end\b\s*?\bevent\b)',flags=re.I|re.DOTALL),txt)
             if find_regex_results:
-                 find_regex_results =  [m for m in find_regex_results] # so that I can refer to multiple items of a generator multiple times
+                find_regex_results =  [m for m in find_regex_results] # so that I can refer to multiple items of a generator multiple times
             if find_regex_results and len(find_regex_results)>0:
                 find_regex_result = find_regex_results[0]
                 self.section_span = {

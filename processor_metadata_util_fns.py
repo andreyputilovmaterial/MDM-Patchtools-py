@@ -50,13 +50,19 @@ def detect_new_var_type_by_attrs(variable_attributes):
     variable_is_grid = False
     variable_is_block = False
     for attr_name, attr_value in variable_attributes.items():
+        attr_value = '{v}'.format(v=attr_value)
         if attr_name=='type':
             variable_is_plain = variable_is_plain or not not re.match(r'^\s*?plain\b',attr_value)
             variable_is_categorical = variable_is_categorical or not not re.match(r'^\s*?plain/(?:categorical|multipunch|singlepunch)',attr_value)
             variable_is_loop = variable_is_loop or not not re.match(r'^\s*?(?:array|grid|loop)\b',attr_value)
             variable_is_block = variable_is_block or not not re.match(r'^\s*?(?:block)\b',attr_value)
-        if attr_name=='is_grid':
+        elif attr_name=='is_grid':
             variable_is_grid = variable_is_grid or not not re.match(r'^\s*?true\b',attr_value)
+        elif attr_name=='object_type_value':
+            variable_is_loop = variable_is_loop or not not re.match(r'^\s*?(?:1|2)\s*?$',attr_value)
+            variable_is_block = variable_is_block or not not re.match(r'^\s*?(?:3)\s*?$',attr_value)
+        elif attr_name=='data_type':
+            variable_is_categorical = variable_is_categorical or not not re.match(r'^\s*?(?:3)\s*?$',attr_value)
     if variable_is_plain or variable_is_categorical:
         result = 'plain'
     elif variable_is_loop:
