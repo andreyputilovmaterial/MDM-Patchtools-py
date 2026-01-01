@@ -100,7 +100,7 @@ class PatchSectionOnNextCaseInsert:
             parent.add(result_chunk)
             self.result_chunks_dict[variable_position] = result_chunk
         else:
-            raise ValueError('Error generating edits: item not found: {p}'.format(p=parent_position))
+            raise Exception('Error generating edits: item not found: {p}'.format(p=parent_position))
 
     def issue_resulting_chunk(self):
         substitutions = {

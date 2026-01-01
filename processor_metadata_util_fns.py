@@ -1,10 +1,14 @@
 
 import re
 
+import sys # for debugging - printing messages to stderr
+
 
 
 class MDMItemNotFound(Exception):
     """MDM item not found"""
+class MDMItemDoesNotSupportNestedFields(Exception):
+    """MDM item does not support nested fields"""
 def find_item(path,mdmitem):
     def extract_top_field_name(item_name):
         def val(s):
@@ -17,7 +21,7 @@ def find_item(path,mdmitem):
             if val(s):
                 return s
             else:
-                raise ValueError('looking for item in records, but name does not follow convention: {s}'.format(s=s))
+                raise Exception('looking for item in records, but name does not follow convention: {s}'.format(s=s))
         def trim_dots(s):
             return re.sub(r'^\s*?\.','',re.sub(r'\.\s*?$','',s))
         item_name_clean = norm(item_name)
@@ -25,7 +29,7 @@ def find_item(path,mdmitem):
         if m:
             return trim_dots(m[1]), trim_dots(m[2])
         else:
-            raise ValueError('Can\'t extract field name from "{s}"'.format(s=item_name))
+            raise Exception('Can\'t extract field name from "{s}"'.format(s=item_name))
     if path=='':
         return mdmitem
     path_root, path_rest = extract_top_field_name(path)
@@ -94,9 +98,9 @@ def create_mdm_variable( variable_name, mdmroot, variable_type ):
     elif variable_type == 'block':
         mdmitem = mdmroot.CreateClass(variable_name, variable_name)
     elif not variable_type:
-        raise ValueError('Cat\'t create object: unrecognized type')
+        raise Exception('Cat\'t create object: unrecognized type')
     else:
-        raise ValueError('Can\'t handle this type of bject: {s}'.format(s=variable_type))
+        raise Exception('Can\'t handle this type of bject: {s}'.format(s=variable_type))
     return mdmitem
 
 
@@ -155,7 +159,24 @@ def update_metadata(mdmroot,position,variable_name,scripts,variable_attributes):
             pass
     
     mdmitem_add.Script = scripts
-    mdmparent.Fields.Add(mdmitem_add) # all tree is updated, and mdmroot now holds updated scripts
+    try:
+        mdmparent.Fields.Add(mdmitem_add) # all tree is updated, and mdmroot now holds updated scripts
+    except AttributeError as e:
+        def is_plain(mdmfield):
+            try:
+                return mdmfield.ObjectTypeValue==0
+            except:
+                return False # say no in any unclear situation
+        def getnamesafe(mdmfield):
+            try:
+                return mdmfield.Name
+            except:
+                return '{f}'.format(f=mdmfield)[:64]
+        print('For debugging, the parent item is: {f}'.format(f=mdmparent.Script),file=sys.stderr)
+        if is_plain(mdmparent):
+            raise MDMItemDoesNotSupportNestedFields('MDM Item "{field_parent}" does not support adding nested fields (trying to add "{field_added}")'.format(field_parent=getnamesafe(mdmparent),field_added=getnamesafe(mdmitem_add))) from e
+        else:
+            raise e
     return mdmroot
 
 
