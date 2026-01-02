@@ -77,16 +77,15 @@ class PatchSectionOnNextCaseInsert:
 
     def __call__(self, edit):
         self.process_edit(edit)
-        for piece in self.issue_resulting_chunk():
-            yield piece
+        yield from self.issue_resulting_chunk()
 
     def process_edit(self, patch):
 
         def print_log_processing(item):
             print('processing onnextcase item "{item}"...'.format(item=item))
-        
+
         print_log_processing(patch['payload']['variable'])
-        
+
         variable_name = patch['payload']['variable']
         parent_position = '{pos}'.format(pos=ParsePositionAddressOnly(patch['position']))
         variable_position = '{path}{subfield}'.format(subfield=variable_name,path='{path}.'.format(path=parent_position) if parent_position else '')
@@ -151,6 +150,3 @@ class ParsePositionAddressOnly:
             raise Exception('wrong position format for the chunk: "{p}"'.format(p=position))
     def __str__(self):
         return '{s}'.format(s=self.position)
-
-
-

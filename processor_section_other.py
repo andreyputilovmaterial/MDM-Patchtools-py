@@ -78,7 +78,7 @@ class PatchSectionOtherInsert(processor_simple.PatchInsert):
         return section_name
 
     def __call__(self, chunk):
-        
+
         section_name = self.sanitize_section_name(chunk['section'])
         if section_name not in self.sections_dict:
             raise PatchSectionOtherInsertException('section "{s}" not found'.format(s=chunk['section']))
@@ -115,8 +115,7 @@ class PatchSectionInputDatasourceInsert(PatchSectionOtherInsert):
         chunk = {**chunk}
         if not 'section' in chunk:
             chunk['section'] = 0
-        for p in super(PatchSectionInputDatasourceInsert,self).__call__(chunk):
-            yield p
+        yield from super(PatchSectionInputDatasourceInsert,self).__call__(chunk)
 
 class PatchSectionInputDatasourceReplace(PatchSectionOtherReplace):
 
@@ -132,8 +131,7 @@ class PatchSectionInputDatasourceReplace(PatchSectionOtherReplace):
         chunk = {**chunk}
         if not 'section' in chunk:
             chunk['section'] = 0
-        for p in super(PatchSectionInputDatasourceReplace,self).__call__(chunk):
-            yield p
+        yield from super(PatchSectionInputDatasourceReplace,self).__call__(chunk)
 
 class PatchSectionOutputDatasourceInsert(PatchSectionOtherInsert):
 
@@ -148,8 +146,7 @@ class PatchSectionOutputDatasourceInsert(PatchSectionOtherInsert):
     def __call__(self, chunk):
         chunk = {**chunk}
         chunk['section'] = 0
-        for p in super(PatchSectionOutputDatasourceInsert,self).__call__(chunk):
-            yield p
+        yield from super(PatchSectionOutputDatasourceInsert,self).__call__(chunk)
 
 class PatchSectionOutputDatasourceReplace(PatchSectionOtherReplace):
 
@@ -164,7 +161,4 @@ class PatchSectionOutputDatasourceReplace(PatchSectionOtherReplace):
     def __call__(self, chunk):
         chunk = {**chunk}
         chunk['section'] = 0
-        for p in super(PatchSectionOutputDatasourceReplace,self).__call__(chunk):
-            yield p
-
-
+        yield from super(PatchSectionOutputDatasourceReplace,self).__call__(chunk)

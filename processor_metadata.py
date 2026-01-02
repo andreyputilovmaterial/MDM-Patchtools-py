@@ -71,9 +71,8 @@ class PatchSectionMetadataInsert:
 
     def __call__(self, edit):
         self.process_edit(edit)
-        for piece in self.issue_resulting_chunk():
-            yield piece
-    
+        yield from self.issue_resulting_chunk()
+
     def process_edit(self, patch):
         def print_log_processing(item):
             print('processing metadata item "{item}"...'.format(item=item))
