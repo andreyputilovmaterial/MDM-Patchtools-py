@@ -3,18 +3,6 @@ import sys
 
 
 
-# if __name__ == '__main__':
-#     # run as a program
-#     import processor_simple_insert
-# elif '.' in __name__:
-#     # package
-#     from . import processor_simple_insert
-# else:
-#     # included with no parent package
-#     import processor_simple_insert
-
-
-
 class FileLoaderException(Exception):
     """Error"""
 

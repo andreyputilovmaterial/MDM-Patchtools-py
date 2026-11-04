@@ -1,16 +1,6 @@
 
-if __name__ == '__main__':
-    # run as a program
-    import handler_base
-    import processor_simple
-elif '.' in __name__:
-    # package
-    from . import handler_base
-    from . import processor_simple
-else:
-    # included with no parent package
-    import handler_base
-    import processor_simple
+from . import handler_base
+from . import processor_simple
 
 
 

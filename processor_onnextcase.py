@@ -9,15 +9,7 @@ import re
 
 
 
-if __name__ == '__main__':
-    # run as a program
-    import processor_onnextcase_code_obj
-elif '.' in __name__:
-    # package
-    from . import processor_onnextcase_code_obj
-else:
-    # included with no parent package
-    import processor_onnextcase_code_obj
+from . import processor_onnextcase_code_obj
 
 
 

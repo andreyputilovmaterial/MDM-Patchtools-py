@@ -9,16 +9,12 @@ import json
 
 
 
-if __name__ == '__main__':
-    # run as a program
-    import handler_dms
-    import handler_txt
-elif '.' in __name__:
-    # package
+if __package__:
+    # package context
     from . import handler_dms
     from . import handler_txt
 else:
-    # included with no parent package
+    # flat context: no parent package
     import handler_dms
     import handler_txt
 

@@ -1,25 +1,9 @@
 
-if __name__ == '__main__':
-    # run as a program
-    import handler_base
-    import processor_simple
-    import processor_onnextcase
-    import processor_metadata
-    import processor_section_other
-elif '.' in __name__:
-    # package
-    from . import handler_base
-    from . import processor_simple
-    from . import processor_onnextcase
-    from . import processor_metadata
-    from . import processor_section_other
-else:
-    # included with no parent package
-    import handler_base
-    import processor_simple
-    import processor_onnextcase
-    import processor_metadata
-    import processor_section_other
+from . import handler_base
+from . import processor_simple
+from . import processor_onnextcase
+from . import processor_metadata
+from . import processor_section_other
 
 
 

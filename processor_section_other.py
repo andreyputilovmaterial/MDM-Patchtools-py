@@ -4,15 +4,7 @@ import re
 
 
 
-if __name__ == '__main__':
-    # run as a program
-    import processor_simple
-elif '.' in __name__:
-    # package
-    from . import processor_simple
-else:
-    # included with no parent package
-    import processor_simple
+from . import processor_simple
 
 
 

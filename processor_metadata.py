@@ -8,15 +8,7 @@ import win32com.client
 
 
 
-if __name__ == '__main__':
-    # run as a program
-    import processor_metadata_util_fns
-elif '.' in __name__:
-    # package
-    from . import processor_metadata_util_fns
-else:
-    # included with no parent package
-    import processor_metadata_util_fns
+from . import processor_metadata_util_fns
 
 
 
